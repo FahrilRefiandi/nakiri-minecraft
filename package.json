@@ -10,16 +10,19 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "consola": "^3.4.2",
     "dotenv": "^17.2.3",
     "minecraft-data": "^3.97.0",
     "minecraft-protocol": "^1.62.0",
     "mineflayer": "^4.33.0",
-    "mineflayer-pathfinder": "^2.4.5"
+    "mineflayer-pathfinder": "^2.4.5",
+    "openai": "^6.15.0"
   },
   "imports": {
     "#behaviors/*": "./behaviors/*.js",
     "#events/*": "./events/*.js",
-    "#utils/*": "./utils/*.js"
+    "#utils/*": "./utils/*.js",
+    "#start/*": "./start/*.js"
   }
 }

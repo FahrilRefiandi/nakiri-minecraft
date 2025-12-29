@@ -1,13 +1,13 @@
 import mineflayer from 'mineflayer'
 import { pathfinder } from 'mineflayer-pathfinder'
 import events from '#events/index'
-import 'dotenv/config'
+import env from '#start/env'
 
 const bot = mineflayer.createBot({
-  host: process.env.SERVER_HOST,
-  port: process.env.SERVER_PORT,
+  host: env.get('SERVER_HOST'),
+  port: env.get('SERVER_PORT'),
   auth: 'offline',
-  username: process.env.BOT_USERNAME,
+  username: env.get('BOT_USERNAME'),
   version: false,
   connectTimeout: 30000,
   hideErrors: true,

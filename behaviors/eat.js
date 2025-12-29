@@ -2,7 +2,9 @@ import MCData from 'minecraft-data'
 const MinecraftData = MCData('1.21.8')
 import consola from 'consola'
 import { BOT_STATE } from '#utils/bot_status'
+import ai from '#start/ai'
 const NO_FOOD_CHAT_COOLDOWN = 30_000
+let LAST_NO_FOOD_CHAT_AT = 0
 
 export async function autoEat(bot) {
   if (BOT_STATE.isEating) return
@@ -22,9 +24,19 @@ export async function autoEat(bot) {
         consola.info('[BOT HEALTH] Tidak ada makanan di inventory.')
 
         const now = Date.now()
-        if (now - BOT_STATE.lastNoFoodChatAt >= NO_FOOD_CHAT_COOLDOWN) {
-          BOT_STATE.lastNoFoodChatAt = now
-          bot.chat('Lapar banget… ada yang bisa kasih makanan?')
+        if (now - LAST_NO_FOOD_CHAT_AT >= NO_FOOD_CHAT_COOLDOWN) {
+          LAST_NO_FOOD_CHAT_AT = now
+          const message = await ai.chat(`
+  Tugas: Parafrase pesan "Tidak ada makanan di inventory. minta makanan."
+  Konteks: Chat di server Minecraft.
+  Gaya: Santai, singkat, seperti pemain asli.
+  Aturan:
+  - Hanya berikan teks pesannya saja.
+  - Tanpa tanda kutip.
+  - Maksimal 10 kata.
+  - Jangan ada kalimat pembuka seperti "Ini hasilnya:".
+`);
+          bot.chat(message.content)
         }
 
         break
@@ -38,7 +50,10 @@ export async function autoEat(bot) {
       await bot.waitForTicks(10)
     }
 
-    consola.success('[BOT HEALTH] Sudah kenyang!')
+    if (bot.food === 20) {
+      consola.success('[BOT HEALTH] Sudah kenyang!')
+      return
+    }
   } catch (e) {
     if (!e.message.includes('cancelled')) {
       consola.error(`[BOT HEALTH] Error: ${e.message}`)
