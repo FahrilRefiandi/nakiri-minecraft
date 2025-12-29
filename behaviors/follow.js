@@ -1,4 +1,3 @@
-import consola from 'consola'
 import { BOT_STATE, BOT_MODE } from '#utils/bot_status'
 import pathfinder from 'mineflayer-pathfinder'
 import mcDataFactory from 'minecraft-data'
